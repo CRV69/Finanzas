@@ -7,7 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Finanzas">
-  <link rel="apple-touch-icon" href="https://img.icons8.com/isometric/180/wallet.png">
+  
+  <!-- Iconos de acceso directo iOS -->
+  <link rel="apple-touch-icon" href="Billetes.png?v=2">
+  <link rel="apple-touch-icon-precomposed" href="Billetes.png?v=2">
 
   <style>
     :root {
@@ -21,26 +24,40 @@
       --orange: #FF9500;
       --purple: #AF52DE;
       --border-color: #E5E5EA;
+      --input-bg: #F9F9FB;
       --radius: 16px;
       --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
+    /* MODO OSCURO */
+    body.dark-mode {
+      --bg-primary: #000000;
+      --bg-card: #1C1C1E;
+      --text-main: #FFFFFF;
+      --text-muted: #98989F;
+      --border-color: #38383A;
+      --input-bg: #2C2C2E;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-primary); color: var(--text-main); padding-bottom: 110px; padding-top: max(env(safe-area-inset-top), 20px); }
+    body { background-color: var(--bg-primary); color: var(--text-main); padding-bottom: 110px; padding-top: max(env(safe-area-inset-top), 20px); transition: background 0.3s, color 0.3s; }
 
     header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
-    header h1 { font-size: 20px; font-weight: 700; }
-    .selector-container { display: flex; gap: 8px; }
-    select { background: #EFEFF4; border: none; padding: 6px 12px; border-radius: 10px; font-weight: 600; font-size: 14px; color: var(--accent); outline: none; }
+    body.dark-mode header { background: rgba(28, 28, 30, 0.85); }
+    header h1 { font-size: 20px; font-weight: 700; color: var(--text-main); }
+    
+    .selector-container { display: flex; gap: 8px; align-items: center; }
+    select { background: #EFEFF4; border: none; padding: 6px 12px; border-radius: 10px; font-weight: 600; font-size: 14px; color: var(--accent); outline: none; cursor: pointer; }
+    body.dark-mode select { background: #2C2C2E; color: var(--accent); }
 
     .container { padding: 16px; max-width: 600px; margin: 0 auto; }
-    .card { background: var(--bg-card); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .card { background: var(--bg-card); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: background 0.3s; }
     .card-title { font-size: 14px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; }
 
     .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-    .kpi-card { background: var(--bg-card); padding: 14px; border-radius: var(--radius); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .kpi-card { background: var(--bg-card); padding: 14px; border-radius: var(--radius); box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: background 0.3s; }
     .kpi-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-    .kpi-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+    .kpi-value { font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--text-main); }
     .kpi-sub { font-size: 11px; margin-top: 2px; font-weight: 600; }
     .positive { color: var(--green); }
     .negative { color: var(--red); }
@@ -48,22 +65,22 @@
     .purple { color: var(--purple); }
 
     .bank-header { font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 8px 10px; margin-top: 10px; margin-bottom: 6px; border-radius: 8px; display: flex; justify-content: space-between; }
-    .bank-header.eci { background: rgba(52, 199, 89, 0.15); color: #1e7e34; }
+    .bank-header.eci { background: rgba(52, 199, 89, 0.15); color: #28a745; }
     .bank-header.caixa { background: rgba(90, 200, 250, 0.15); color: #0071a4; }
     .bank-header.openbank { background: rgba(0, 122, 255, 0.15); color: #004085; }
-    .bank-header.santander { background: rgba(255, 59, 48, 0.15); color: #a71d2a; }
-    .bank-header.transfer { background: rgba(175, 82, 222, 0.15); color: #7b2cbf; }
+    .bank-header.santander { background: rgba(255, 59, 48, 0.15); color: #d9534f; }
+    .bank-header.transfer { background: rgba(175, 82, 222, 0.15); color: #9b51e0; }
     .bank-header.inv { background: rgba(0, 122, 255, 0.15); color: #0056b3; }
 
     .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
     .item-row:last-child { border-bottom: none; }
-    .item-name { font-size: 15px; font-weight: 500; }
+    .item-name { font-size: 15px; font-weight: 500; color: var(--text-main); }
     .item-sub { font-size: 12px; color: var(--text-muted); }
-    .item-input { width: 120px; text-align: right; border: 1px solid var(--border-color); background: #F9F9FB; padding: 6px 10px; border-radius: 8px; font-size: 15px; font-weight: 600; color: var(--text-main); }
-    .item-input:focus { border-color: var(--accent); background: #FFF; outline: none; }
+    .item-input { width: 120px; text-align: right; border: 1px solid var(--border-color); background: var(--input-bg); padding: 6px 10px; border-radius: 8px; font-size: 15px; font-weight: 600; color: var(--text-main); }
+    .item-input:focus { border-color: var(--accent); background: var(--bg-card); outline: none; }
 
     .checked-item .item-name { color: var(--text-muted); }
-    .checked-item .item-sub { color: #C7C7CC; }
+    .checked-item .item-sub { color: #636366; }
     .custom-check { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; margin-right: 10px; flex-shrink: 0; }
 
     nav.tab-bar { 
@@ -74,7 +91,10 @@
       display: flex; justify-content: space-around; align-items: center;
       padding: 10px 12px max(env(safe-area-inset-bottom), 18px); 
       z-index: 100; 
+      transition: background 0.3s;
     }
+    body.dark-mode nav.tab-bar { background: rgba(28, 28, 30, 0.95); }
+    
     .tab-item { 
       display: flex; flex-direction: column; align-items: center; 
       color: var(--text-muted); font-size: 11px; font-weight: 500; 
@@ -85,18 +105,19 @@
 
     .btn { background: var(--accent); color: white; border: none; padding: 12px 16px; border-radius: 12px; font-weight: 600; width: 100%; font-size: 15px; cursor: pointer; margin-top: 8px; }
     .btn-secondary { background: #EFEFF4; color: var(--accent); }
+    body.dark-mode .btn-secondary { background: #2C2C2E; }
+    
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: flex-end; }
-    .modal-content { background: #FFF; border-radius: 20px 20px 0 0; padding: 20px; width: 100%; max-width: 600px; animation: slideUp 0.25s ease-out; max-height: 85vh; overflow-y: auto; }
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 200; justify-content: center; align-items: flex-end; }
+    .modal-content { background: var(--bg-card); color: var(--text-main); border-radius: 20px 20px 0 0; padding: 20px; width: 100%; max-width: 600px; animation: slideUp 0.25s ease-out; max-height: 85vh; overflow-y: auto; transition: background 0.3s, color 0.3s; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
-    .form-control { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: #F9F9FB; font-size: 15px; outline: none; }
+    .form-control { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 15px; outline: none; }
   </style>
-<link rel="apple-touch-icon" href="Billetes.png?v=2">
-<link rel="apple-touch-icon-precomposed" href="Billetes.png?v=2">
 </head>
 <body>
 
@@ -238,6 +259,11 @@
 
     <!-- TAB 5: AJUSTES -->
     <div id="tab-ajustes" class="tab-content">
+      <div class="card">
+        <div class="card-title">Apariencia y Tema</div>
+        <button class="btn btn-secondary" id="themeBtnText" onclick="toggleTheme()">🌙 Cambiar a Modo Oscuro</button>
+      </div>
+
       <div class="card">
         <div class="card-title">Gestión de Años</div>
         <button class="btn" style="margin-bottom: 8px;" onclick="openNuevoAnioModal()">➕ Generar Nuevo Año (Presupuesto)</button>
@@ -449,6 +475,22 @@
   </div>
 
   <script>
+    // Inicializar tema guardado antes de renderizar
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      
+      const btnText = document.getElementById('themeBtnText');
+      if (btnText) {
+        btnText.innerText = isDark ? '☀️ Cambiar a Modo Claro' : '🌙 Cambiar a Modo Oscuro';
+      }
+    }
+
     const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
 
     function fmt2(val) {
@@ -654,6 +696,12 @@
           monthSel.value = currentMonth;
         }
 
+        const btnText = document.getElementById('themeBtnText');
+        if (btnText) {
+          const isDark = document.body.classList.contains('dark-mode');
+          btnText.innerText = isDark ? '☀️ Cambiar a Modo Claro' : '🌙 Cambiar a Modo Oscuro';
+        }
+
         renderAll();
       } catch (err) {
         console.error("Error en init:", err);
@@ -803,19 +851,20 @@
       }
 
       let html = `
-        <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 700px;">
-          <thead>
-            <tr style="border-bottom: 2px solid var(--border-color); text-align: left; color: var(--text-muted);">
-              <th style="padding: 8px 4px;">Banco / Cuenta</th>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 700px;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border-color); text-align: left; color: var(--text-muted);">
+                <th style="padding: 8px 4px;">Banco / Cuenta</th>
       `;
       months.forEach(m => {
         html += `<th style="padding: 8px 4px; text-align: right;">${m}</th>`;
       });
       html += `
-              <th style="padding: 8px 4px; text-align: right; color: var(--accent);">Actual</th>
-            </tr>
-          </thead>
-          <tbody>
+                <th style="padding: 8px 4px; text-align: right; color: var(--accent);">Actual</th>
+              </tr>
+            </thead>
+            <tbody>
       `;
 
       let totalesMeses = new Array(12).fill(0);
@@ -823,12 +872,12 @@
       bankNames.forEach(bankName => {
         let arr = efObj[bankName] || new Array(12).fill(0);
         html += `<tr style="border-bottom: 1px solid var(--border-color);">`;
-        html += `<td style="padding: 8px 4px; font-weight: 600; white-space: nowrap;">${bankName}</td>`;
+        html += `<td style="padding: 8px 4px; font-weight: 600; white-space: nowrap; color: var(--text-main);">${bankName}</td>`;
         
         for (let i = 0; i < 12; i++) {
           let val = arr[i] || 0;
           totalesMeses[i] += val;
-          let colorClass = val < 0 ? 'color: var(--red);' : '';
+          let colorClass = val < 0 ? 'color: var(--red);' : 'color: var(--text-main);';
           html += `<td style="padding: 8px 4px; text-align: right; ${colorClass}">${fmt2(val)}</td>`;
         }
         let currentVal = arr[currentMonth] || 0;
@@ -836,18 +885,19 @@
         html += `</tr>`;
       });
 
-      html += `<tr style="border-top: 2px solid var(--border-color); font-weight: 700; background: #F9F9FB;">`;
-      html += `<td style="padding: 8px 4px;">TOTAL EFECTIVO</td>`;
+      let footerBg = document.body.classList.contains('dark-mode') ? '#2C2C2E' : '#F9F9FB';
+      html += `<tr style="border-top: 2px solid var(--border-color); font-weight: 700; background: ${footerBg};">`;
+      html += `<td style="padding: 8px 4px; color: var(--text-main);">TOTAL EFECTIVO</td>`;
       for (let i = 0; i < 12; i++) {
         let tVal = totalesMeses[i];
-        let colorClass = tVal < 0 ? 'color: var(--red);' : '';
+        let colorClass = tVal < 0 ? 'color: var(--red);' : 'color: var(--text-main);';
         html += `<td style="padding: 8px 4px; text-align: right; ${colorClass}">${fmt2(tVal)}</td>`;
       }
       let totalCurrent = totalesMeses[currentMonth] || 0;
       html += `<td style="padding: 8px 4px; text-align: right; color: var(--accent);">${fmt2(totalCurrent)}</td>`;
       html += `</tr>`;
 
-      html += `</tbody></table>`;
+      html += `</tbody></table></div>`;
       container.innerHTML = html;
     }
 
@@ -935,11 +985,11 @@
         containerTipo.innerHTML = `
           <div class="item-row">
             <div><span class="item-name">Renta Fija</span><div class="item-sub">${fmt2(pctRF)}% del total</div></div>
-            <strong>€${fmt2(sumRF)}</strong>
+            <strong style="color:var(--text-main);">€${fmt2(sumRF)}</strong>
           </div>
           <div class="item-row">
             <div><span class="item-name">Renta Variable</span><div class="item-sub">${fmt2(pctRV)}% del total</div></div>
-            <strong>€${fmt2(sumRV)}</strong>
+            <strong style="color:var(--text-main);">€${fmt2(sumRV)}</strong>
           </div>
         `;
       }
@@ -963,7 +1013,7 @@
                   <div class="item-sub">${groupName} • <span class="${pctAnual>=0?'positive':'negative'}">${pctAnual>=0?'+':''}${fmt2(pctAnual)}% anual</span></div>
                 </div>
                 <div style="text-align: right;">
-                  <strong>€${fmt2(val)}</strong>
+                  <strong style="color:var(--text-main);">€${fmt2(val)}</strong>
                   <div class="item-sub ${diffAnual>=0?'positive':'negative'}">${diffAnual>=0?'+':''}€${fmt2(diffAnual)}</div>
                 </div>
               </div>
@@ -1270,7 +1320,7 @@
       closeModals();
     }
 
-    /* GENERAR NUEVO AÑO (CLONA INVERSIONES, GASTOS, INGRESOS Y EFECTIVO RESPETANDO SALDOS Y EVITANDO NEGATIVOS) */
+    /* GENERAR NUEVO AÑO */
     function openNuevoAnioModal() {
       const sel = document.getElementById('anioBaseSelect');
       if (sel) {
@@ -1318,7 +1368,7 @@
         checks: {}
       };
 
-      // 1. Copiar Inversiones (Renta Fija y Renta Variable) fijando el saldo final de diciembre del año base
+      // 1. Copiar Inversiones fijando el saldo final de diciembre del año base
       ['rentafija', 'rentavariable'].forEach(cat => {
         if (baseData[cat]) {
           Object.keys(baseData[cat]).forEach(item => {
@@ -1330,8 +1380,7 @@
         }
       });
 
-      // 2. Copiar exactamente la estructura de efectivo del año anterior ajustando el desfase del primer mes
-      // para que el patrimonio total comience correctamente con los saldos reales de Diciembre.
+      // 2. Copiar estructura de efectivo ajustando el desfase del primer mes
       if (baseData.efectivo) {
         Object.keys(baseData.efectivo).forEach(efKey => {
           let oldArr = baseData.efectivo[efKey] || new Array(12).fill(0);
@@ -1341,7 +1390,6 @@
 
           let newArr = new Array(12).fill(0);
           for (let i = 0; i < 12; i++) {
-            // Mantiene la misma progresión y estacionalidad del año anterior, desplazada con el saldo real de cierre
             newArr[i] = (oldArr[i] !== undefined ? oldArr[i] : 0) + diferenciaBase;
           }
           newYearData.efectivo[efKey] = newArr;
@@ -1355,7 +1403,7 @@
       save();
       closeModals();
       init();
-      alert(`¡Año ${newYearInput} generado con éxito! Se han copiado fielmente las inversiones, gastos, ingresos y la estructura de efectivo del año ${baseYear} manteniendo un patrimonio total coherente y sin saldos erróneos.`);
+      alert(`¡Año ${newYearInput} generado con éxito! Se han copiado fielmente las inversiones, gastos, ingresos y la estructura de efectivo del año ${baseYear}.`);
     }
 
     /* BORRAR AÑO */
@@ -1447,12 +1495,14 @@
         totalGastosBancos += bankSum;
       });
 
+      let subCardBg = document.body.classList.contains('dark-mode') ? '#2C2C2E' : '#F9F9FB';
+
       let html = `
         <div style="font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; text-transform: uppercase;">
           Año: ${currentYear} • Periodo: Ene - ${months[m]}
         </div>
 
-        <div class="card" style="background: #F9F9FB; margin-bottom: 12px; padding: 12px;">
+        <div class="card" style="background: ${subCardBg}; margin-bottom: 12px; padding: 12px;">
           <div style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--accent);">
             📈 EVOLUCIÓN DEL PATRIMONIO (ENE vs ${months[m]})
           </div>
@@ -1502,7 +1552,7 @@
           </div>
         </div>
 
-        <div class="card" style="background: #F9F9FB; margin-bottom: 12px; padding: 12px;">
+        <div class="card" style="background: ${subCardBg}; margin-bottom: 12px; padding: 12px;">
           <div style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--purple);">
             💸 FLUJO ACUMULADO (HASTA ${months[m]})
           </div>
@@ -1526,7 +1576,7 @@
           </div>
         </div>
 
-        <div class="card" style="background: #F9F9FB; margin-bottom: 0; padding: 12px;">
+        <div class="card" style="background: ${subCardBg}; margin-bottom: 0; padding: 12px;">
           <div style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--orange);">
             🏦 GASTOS POR BANCO (Toca en cada banco para ver gráfico de desgloses)
           </div>
@@ -1556,12 +1606,12 @@
           let catVal = bankCategories[concept];
           let catPct = totalBankVal > 0 ? (catVal / totalBankVal) * 100 : 0;
           detailsHtml += `
-            <div style="padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
-              <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; margin-bottom: 3px;">
+            <div style="padding: 6px 0; border-bottom: 1px solid var(--border-color);">
+              <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; margin-bottom: 3px; color: var(--text-main);">
                 <span>${concept}</span>
-                <strong>€${fmt2(catVal)} <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(${fmt2(catPct)}%)</span></strong>
+                <strong style="color:var(--text-main);">€${fmt2(catVal)} <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(${fmt2(catPct)}%)</span></strong>
               </div>
-              <div style="background: #E5E5EA; border-radius: 4px; height: 6px; width: 100%; overflow: hidden;">
+              <div style="background: var(--border-color); border-radius: 4px; height: 6px; width: 100%; overflow: hidden;">
                 <div style="background: var(--accent); width: ${catPct}%; height: 100%; border-radius: 4px;"></div>
               </div>
             </div>
@@ -1575,7 +1625,7 @@
                 <span class="item-name" style="color: var(--accent); font-weight: 600;">${b} ▾</span>
                 <div class="item-sub">${fmt2(pct)}% del total gastado</div>
               </div>
-              <strong style="font-size: 15px;">€${fmt2(val)}</strong>
+              <strong style="font-size: 15px; color: var(--text-main);">€${fmt2(val)}</strong>
             </div>
             <div id="bank-details-${idx}" style="display: none; margin-top: 10px; padding-left: 8px; border-left: 3px solid var(--accent);">
               <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">Desglose por tipo de gasto en ${b}:</div>
