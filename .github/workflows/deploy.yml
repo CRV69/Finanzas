@@ -13,7 +13,7 @@ jobs:
 
       - name: Inyectar Contraseña Segura
         run: |
-          # Inserta directamente el hash secreto en la variable TARGET_HASH del index.html
+          # Reemplaza la línea entera de la contraseña por tu secreto de GitHub
           sed -i 's/const TARGET_HASH = ".*";/const TARGET_HASH = "${{ secrets.APP_PASSWORD_HASH }}";/g' index.html
 
       - name: Deploy to GitHub Pages
