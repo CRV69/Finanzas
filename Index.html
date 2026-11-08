@@ -487,7 +487,7 @@
       if (e.key === 'Enter') unlockApp();
     });
 
-    // Hash secreto inyectado por GitHub Actions (si no está inyectado, usa un modo de prueba o bloqueo)
+    // Hash secreto inyectado automáticamente por GitHub Actions
     const TARGET_HASH = "__PASSWORD_HASH_PLACEHOLDER__";
 
     async function hashString(str) {
