@@ -1,0 +1,24 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ] # (o 'master', según cómo se llame tu rama principal)
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # --- ESTE ES EL PASO CLAVE QUE DEBES AÑADIR ---
+      - name: Inject Password Hash
+        run: |
+          sed -i 's/__PASSWORD_HASH_PLACEHOLDER__/${{ secrets.APP_PASSWORD_HASH }}/g' index.html
+      # ---------------------------------------------
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
